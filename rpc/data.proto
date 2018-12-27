@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package rpc;
+
+service FileSystem {
+  rpc CreateFile(Filename) returns (Response) {}
+  rpc DeleteFile(Filename) returns (Response) {}
+  rpc ListFiles(Empty) returns (stream FileList) {}
+  // rpc Upload(stream Chunk) returns (Response) {}
+  // rpc Download(Request) returns (stream Chunk) {}
+}
+
+message Empty {}
+
+message Chunk {
+  bytes buffer = 1;
+}
+
+enum StatusCode {
+  OK = 0;
+  Failed = 1;
+}
+
+message Response {
+  StatusCode code = 1;
+  string message = 2;
+}
+
+message Filename {
+  string filename = 1;
+}
+
+message FileList {
+  string filename = 1;
+  float size = 2;
+  float createdtime = 3;
+  float modifiedtime = 4;
+}
