@@ -29,6 +29,26 @@ class FileSystemStub(object):
         request_serializer=data__pb2.Empty.SerializeToString,
         response_deserializer=data__pb2.FileList.FromString,
         )
+    self.Upload = channel.stream_unary(
+        '/rpc.FileSystem/Upload',
+        request_serializer=data__pb2.UploadRequest.SerializeToString,
+        response_deserializer=data__pb2.Response.FromString,
+        )
+    self.Download = channel.unary_stream(
+        '/rpc.FileSystem/Download',
+        request_serializer=data__pb2.Filename.SerializeToString,
+        response_deserializer=data__pb2.Chunk.FromString,
+        )
+    self.Lock = channel.unary_unary(
+        '/rpc.FileSystem/Lock',
+        request_serializer=data__pb2.Filename.SerializeToString,
+        response_deserializer=data__pb2.Response.FromString,
+        )
+    self.Unlock = channel.unary_unary(
+        '/rpc.FileSystem/Unlock',
+        request_serializer=data__pb2.Filename.SerializeToString,
+        response_deserializer=data__pb2.Response.FromString,
+        )
 
 
 class FileSystemServicer(object):
@@ -56,6 +76,34 @@ class FileSystemServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def Upload(self, request_iterator, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def Download(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def Lock(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def Unlock(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_FileSystemServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -73,6 +121,26 @@ def add_FileSystemServicer_to_server(servicer, server):
           servicer.ListFiles,
           request_deserializer=data__pb2.Empty.FromString,
           response_serializer=data__pb2.FileList.SerializeToString,
+      ),
+      'Upload': grpc.stream_unary_rpc_method_handler(
+          servicer.Upload,
+          request_deserializer=data__pb2.UploadRequest.FromString,
+          response_serializer=data__pb2.Response.SerializeToString,
+      ),
+      'Download': grpc.unary_stream_rpc_method_handler(
+          servicer.Download,
+          request_deserializer=data__pb2.Filename.FromString,
+          response_serializer=data__pb2.Chunk.SerializeToString,
+      ),
+      'Lock': grpc.unary_unary_rpc_method_handler(
+          servicer.Lock,
+          request_deserializer=data__pb2.Filename.FromString,
+          response_serializer=data__pb2.Response.SerializeToString,
+      ),
+      'Unlock': grpc.unary_unary_rpc_method_handler(
+          servicer.Unlock,
+          request_deserializer=data__pb2.Filename.FromString,
+          response_serializer=data__pb2.Response.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

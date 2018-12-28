@@ -6,14 +6,23 @@ service FileSystem {
   rpc CreateFile(Filename) returns (Response) {}
   rpc DeleteFile(Filename) returns (Response) {}
   rpc ListFiles(Empty) returns (stream FileList) {}
-  // rpc Upload(stream Chunk) returns (Response) {}
-  // rpc Download(Request) returns (stream Chunk) {}
+  rpc Upload(stream UploadRequest) returns (Response) {}
+  rpc Download(Filename) returns (stream Chunk) {}
+  rpc Lock(Filename) returns (Response) {}
+  rpc Unlock(Filename) returns (Response) {}
 }
 
 message Empty {}
 
 message Chunk {
   bytes buffer = 1;
+}
+
+message UploadRequest {
+  oneof test_oneof{
+    string filename = 1;
+    bytes buffer = 2;
+  }
 }
 
 enum StatusCode {

@@ -6,6 +6,9 @@ from pathlib import Path
 from concurrent import futures
 from rpc import data_pb2, data_pb2_grpc
 
+# from portalocker.portalocker import lock, unlock
+# from portalocker.constants import LOCK_SH, LOCK_EX, LOCK_NB, LOCK_UN
+
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 _HOST = 'localhost'
 _PORT = '8080'
@@ -15,6 +18,27 @@ CHUNK_SIZE = 1024 * 1024
 DIR = 'g:/dfs-test/server1/'
 
 class FileServer(data_pb2_grpc.FileSystemServicer):
+    locked_files = []
+
+    def checkIfLocked(self, filename):
+        if filename in self.locked_files:
+            return True
+        else:
+            return False
+
+    def Lock(self, request, context):
+        file_path = DIR + request.filename
+        if self.checkIfLocked(file_path):
+            return data_pb2.Response(code=1, message='File was locked by others.')
+        else:
+            self.locked_files.append(file_path)
+            return data_pb2.Response(code=0, message='Locked.')
+
+    def Unlock(self, request, context):
+        file_path = DIR + request.filename
+        if self.checkIfLocked(file_path):
+            self.locked_files.remove(file_path)
+        return data_pb2.Response(code=0, message='Unlocked.')
 
     def CreateFile(self, request, context):
         file_path = DIR + request.filename
@@ -44,12 +68,27 @@ class FileServer(data_pb2_grpc.FileSystemServicer):
                                         createdtime=info.st_ctime,
                                         modifiedtime=info.st_mtime)
 
-    # def Upload(self, request_iterator, context):
-    #     file_path = DIR + 'test.png'
-    #     with open(file_path, 'wb') as f:
-    #         for chunk in request_iterator:
-    #             f.write(chunk.buffer)
-    #     return data_pb2.UploadStatusCode(code=1)
+    def Download(self, request, context):
+        file_path = DIR + request.filename
+        with open(file_path, 'rb') as f:
+            while True:
+                chunk = f.read(CHUNK_SIZE)
+                if len(chunk) == 0:
+                    return
+                yield data_pb2.Chunk(buffer=chunk)
+
+    def Upload(self, request_iterator, context):
+        for no, request in enumerate(request_iterator):
+            if no == 0:
+                file_path = DIR + request.filename
+                file = open(file_path, 'wb')
+            else:
+                file.write(request.buffer)
+        file.close()
+        return data_pb2.Response(code=0, message='ok')
+
+
+
 
 def serve():
     grpcServer = grpc.server(futures.ThreadPoolExecutor(max_workers=4))
