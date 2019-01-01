@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='rpc',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\ndata.proto\x12\x03rpc\"\x07\n\x05\x45mpty\"\x17\n\x05\x43hunk\x12\x0e\n\x06\x62uffer\x18\x01 \x01(\x0c\"C\n\rUploadRequest\x12\x12\n\x08\x66ilename\x18\x01 \x01(\tH\x00\x12\x10\n\x06\x62uffer\x18\x02 \x01(\x0cH\x00\x42\x0c\n\ntest_oneof\":\n\x08Response\x12\x1d\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x0f.rpc.StatusCode\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1c\n\x08\x46ilename\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\"U\n\x08\x46ileList\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0c\n\x04size\x18\x02 \x01(\x02\x12\x13\n\x0b\x63reatedtime\x18\x03 \x01(\x02\x12\x14\n\x0cmodifiedtime\x18\x04 \x01(\x02* \n\nStatusCode\x12\x06\n\x02OK\x10\x00\x12\n\n\x06\x46\x61iled\x10\x01\x32\xc2\x02\n\nFileSystem\x12,\n\nCreateFile\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x12,\n\nDeleteFile\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x12*\n\tListFiles\x12\n.rpc.Empty\x1a\r.rpc.FileList\"\x00\x30\x01\x12/\n\x06Upload\x12\x12.rpc.UploadRequest\x1a\r.rpc.Response\"\x00(\x01\x12)\n\x08\x44ownload\x12\r.rpc.Filename\x1a\n.rpc.Chunk\"\x00\x30\x01\x12&\n\x04Lock\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x12(\n\x06Unlock\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\ndata.proto\x12\x03rpc\"\x07\n\x05\x45mpty\"/\n\x0bLockRequest\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0e\n\x06userid\x18\x02 \x01(\x05\"\x1a\n\x07\x41\x64\x64ress\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"=\n\x0bHostAddress\x12\x1d\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x0f.rpc.StatusCode\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"\x17\n\x05\x43hunk\x12\x0e\n\x06\x62uffer\x18\x01 \x01(\x0c\"C\n\rUploadRequest\x12\x12\n\x08\x66ilename\x18\x01 \x01(\tH\x00\x12\x10\n\x06\x62uffer\x18\x02 \x01(\x0cH\x00\x42\x0c\n\ntest_oneof\":\n\x08Response\x12\x1d\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x0f.rpc.StatusCode\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1c\n\x08\x46ilename\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\"U\n\x08\x46ileInfo\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0c\n\x04size\x18\x02 \x01(\x02\x12\x13\n\x0b\x63reatedtime\x18\x03 \x01(\x02\x12\x14\n\x0cmodifiedtime\x18\x04 \x01(\x02* \n\nStatusCode\x12\x06\n\x02OK\x10\x00\x12\n\n\x06\x46\x61iled\x10\x01\x32\xcb\x02\n\nFileSystem\x12,\n\nCreateFile\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x12,\n\nDeleteFile\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x12-\n\x0bGetFileInfo\x12\r.rpc.Filename\x1a\r.rpc.FileInfo\"\x00\x12/\n\x06Upload\x12\x12.rpc.UploadRequest\x1a\r.rpc.Response\"\x00(\x01\x12)\n\x08\x44ownload\x12\r.rpc.Filename\x1a\n.rpc.Chunk\"\x00\x30\x01\x12)\n\x04Lock\x12\x10.rpc.LockRequest\x1a\r.rpc.Response\"\x00\x12+\n\x06Unlock\x12\x10.rpc.LockRequest\x1a\r.rpc.Response\"\x00\x32\xe9\x01\n\x07Tracker\x12,\n\x07GetHost\x12\r.rpc.Filename\x1a\x10.rpc.HostAddress\"\x00\x12-\n\nGetServers\x12\r.rpc.Filename\x1a\x0c.rpc.Address\"\x00\x30\x01\x12\'\n\tHeartBeat\x12\x0c.rpc.Address\x1a\n.rpc.Empty\"\x00\x12*\n\tListFiles\x12\n.rpc.Empty\x1a\r.rpc.FileInfo\"\x00\x30\x01\x12,\n\nDeleteFile\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x62\x06proto3')
 )
 
 _STATUSCODE = _descriptor.EnumDescriptor(
@@ -40,8 +40,8 @@ _STATUSCODE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=299,
-  serialized_end=331,
+  serialized_start=439,
+  serialized_end=471,
 )
 _sym_db.RegisterEnumDescriptor(_STATUSCODE)
 
@@ -75,6 +75,113 @@ _EMPTY = _descriptor.Descriptor(
 )
 
 
+_LOCKREQUEST = _descriptor.Descriptor(
+  name='LockRequest',
+  full_name='rpc.LockRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='filename', full_name='rpc.LockRequest.filename', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='userid', full_name='rpc.LockRequest.userid', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=28,
+  serialized_end=75,
+)
+
+
+_ADDRESS = _descriptor.Descriptor(
+  name='Address',
+  full_name='rpc.Address',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='address', full_name='rpc.Address.address', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=77,
+  serialized_end=103,
+)
+
+
+_HOSTADDRESS = _descriptor.Descriptor(
+  name='HostAddress',
+  full_name='rpc.HostAddress',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='code', full_name='rpc.HostAddress.code', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='address', full_name='rpc.HostAddress.address', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=105,
+  serialized_end=166,
+)
+
+
 _CHUNK = _descriptor.Descriptor(
   name='Chunk',
   full_name='rpc.Chunk',
@@ -101,8 +208,8 @@ _CHUNK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=28,
-  serialized_end=51,
+  serialized_start=168,
+  serialized_end=191,
 )
 
 
@@ -142,8 +249,8 @@ _UPLOADREQUEST = _descriptor.Descriptor(
       name='test_oneof', full_name='rpc.UploadRequest.test_oneof',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=53,
-  serialized_end=120,
+  serialized_start=193,
+  serialized_end=260,
 )
 
 
@@ -180,8 +287,8 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=122,
-  serialized_end=180,
+  serialized_start=262,
+  serialized_end=320,
 )
 
 
@@ -211,41 +318,41 @@ _FILENAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=182,
-  serialized_end=210,
+  serialized_start=322,
+  serialized_end=350,
 )
 
 
-_FILELIST = _descriptor.Descriptor(
-  name='FileList',
-  full_name='rpc.FileList',
+_FILEINFO = _descriptor.Descriptor(
+  name='FileInfo',
+  full_name='rpc.FileInfo',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='filename', full_name='rpc.FileList.filename', index=0,
+      name='filename', full_name='rpc.FileInfo.filename', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='size', full_name='rpc.FileList.size', index=1,
+      name='size', full_name='rpc.FileInfo.size', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='createdtime', full_name='rpc.FileList.createdtime', index=2,
+      name='createdtime', full_name='rpc.FileInfo.createdtime', index=2,
       number=3, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='modifiedtime', full_name='rpc.FileList.modifiedtime', index=3,
+      name='modifiedtime', full_name='rpc.FileInfo.modifiedtime', index=3,
       number=4, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
@@ -263,10 +370,11 @@ _FILELIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=212,
-  serialized_end=297,
+  serialized_start=352,
+  serialized_end=437,
 )
 
+_HOSTADDRESS.fields_by_name['code'].enum_type = _STATUSCODE
 _UPLOADREQUEST.oneofs_by_name['test_oneof'].fields.append(
   _UPLOADREQUEST.fields_by_name['filename'])
 _UPLOADREQUEST.fields_by_name['filename'].containing_oneof = _UPLOADREQUEST.oneofs_by_name['test_oneof']
@@ -275,11 +383,14 @@ _UPLOADREQUEST.oneofs_by_name['test_oneof'].fields.append(
 _UPLOADREQUEST.fields_by_name['buffer'].containing_oneof = _UPLOADREQUEST.oneofs_by_name['test_oneof']
 _RESPONSE.fields_by_name['code'].enum_type = _STATUSCODE
 DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
+DESCRIPTOR.message_types_by_name['LockRequest'] = _LOCKREQUEST
+DESCRIPTOR.message_types_by_name['Address'] = _ADDRESS
+DESCRIPTOR.message_types_by_name['HostAddress'] = _HOSTADDRESS
 DESCRIPTOR.message_types_by_name['Chunk'] = _CHUNK
 DESCRIPTOR.message_types_by_name['UploadRequest'] = _UPLOADREQUEST
 DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 DESCRIPTOR.message_types_by_name['Filename'] = _FILENAME
-DESCRIPTOR.message_types_by_name['FileList'] = _FILELIST
+DESCRIPTOR.message_types_by_name['FileInfo'] = _FILEINFO
 DESCRIPTOR.enum_types_by_name['StatusCode'] = _STATUSCODE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -289,6 +400,27 @@ Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), d
   # @@protoc_insertion_point(class_scope:rpc.Empty)
   ))
 _sym_db.RegisterMessage(Empty)
+
+LockRequest = _reflection.GeneratedProtocolMessageType('LockRequest', (_message.Message,), dict(
+  DESCRIPTOR = _LOCKREQUEST,
+  __module__ = 'data_pb2'
+  # @@protoc_insertion_point(class_scope:rpc.LockRequest)
+  ))
+_sym_db.RegisterMessage(LockRequest)
+
+Address = _reflection.GeneratedProtocolMessageType('Address', (_message.Message,), dict(
+  DESCRIPTOR = _ADDRESS,
+  __module__ = 'data_pb2'
+  # @@protoc_insertion_point(class_scope:rpc.Address)
+  ))
+_sym_db.RegisterMessage(Address)
+
+HostAddress = _reflection.GeneratedProtocolMessageType('HostAddress', (_message.Message,), dict(
+  DESCRIPTOR = _HOSTADDRESS,
+  __module__ = 'data_pb2'
+  # @@protoc_insertion_point(class_scope:rpc.HostAddress)
+  ))
+_sym_db.RegisterMessage(HostAddress)
 
 Chunk = _reflection.GeneratedProtocolMessageType('Chunk', (_message.Message,), dict(
   DESCRIPTOR = _CHUNK,
@@ -318,12 +450,12 @@ Filename = _reflection.GeneratedProtocolMessageType('Filename', (_message.Messag
   ))
 _sym_db.RegisterMessage(Filename)
 
-FileList = _reflection.GeneratedProtocolMessageType('FileList', (_message.Message,), dict(
-  DESCRIPTOR = _FILELIST,
+FileInfo = _reflection.GeneratedProtocolMessageType('FileInfo', (_message.Message,), dict(
+  DESCRIPTOR = _FILEINFO,
   __module__ = 'data_pb2'
-  # @@protoc_insertion_point(class_scope:rpc.FileList)
+  # @@protoc_insertion_point(class_scope:rpc.FileInfo)
   ))
-_sym_db.RegisterMessage(FileList)
+_sym_db.RegisterMessage(FileInfo)
 
 
 
@@ -333,8 +465,8 @@ _FILESYSTEM = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=334,
-  serialized_end=656,
+  serialized_start=474,
+  serialized_end=805,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreateFile',
@@ -355,12 +487,12 @@ _FILESYSTEM = _descriptor.ServiceDescriptor(
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
-    name='ListFiles',
-    full_name='rpc.FileSystem.ListFiles',
+    name='GetFileInfo',
+    full_name='rpc.FileSystem.GetFileInfo',
     index=2,
     containing_service=None,
-    input_type=_EMPTY,
-    output_type=_FILELIST,
+    input_type=_FILENAME,
+    output_type=_FILEINFO,
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
@@ -386,7 +518,7 @@ _FILESYSTEM = _descriptor.ServiceDescriptor(
     full_name='rpc.FileSystem.Lock',
     index=5,
     containing_service=None,
-    input_type=_FILENAME,
+    input_type=_LOCKREQUEST,
     output_type=_RESPONSE,
     serialized_options=None,
   ),
@@ -395,7 +527,7 @@ _FILESYSTEM = _descriptor.ServiceDescriptor(
     full_name='rpc.FileSystem.Unlock',
     index=6,
     containing_service=None,
-    input_type=_FILENAME,
+    input_type=_LOCKREQUEST,
     output_type=_RESPONSE,
     serialized_options=None,
   ),
@@ -403,5 +535,65 @@ _FILESYSTEM = _descriptor.ServiceDescriptor(
 _sym_db.RegisterServiceDescriptor(_FILESYSTEM)
 
 DESCRIPTOR.services_by_name['FileSystem'] = _FILESYSTEM
+
+
+_TRACKER = _descriptor.ServiceDescriptor(
+  name='Tracker',
+  full_name='rpc.Tracker',
+  file=DESCRIPTOR,
+  index=1,
+  serialized_options=None,
+  serialized_start=808,
+  serialized_end=1041,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='GetHost',
+    full_name='rpc.Tracker.GetHost',
+    index=0,
+    containing_service=None,
+    input_type=_FILENAME,
+    output_type=_HOSTADDRESS,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetServers',
+    full_name='rpc.Tracker.GetServers',
+    index=1,
+    containing_service=None,
+    input_type=_FILENAME,
+    output_type=_ADDRESS,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='HeartBeat',
+    full_name='rpc.Tracker.HeartBeat',
+    index=2,
+    containing_service=None,
+    input_type=_ADDRESS,
+    output_type=_EMPTY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListFiles',
+    full_name='rpc.Tracker.ListFiles',
+    index=3,
+    containing_service=None,
+    input_type=_EMPTY,
+    output_type=_FILEINFO,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteFile',
+    full_name='rpc.Tracker.DeleteFile',
+    index=4,
+    containing_service=None,
+    input_type=_FILENAME,
+    output_type=_RESPONSE,
+    serialized_options=None,
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_TRACKER)
+
+DESCRIPTOR.services_by_name['Tracker'] = _TRACKER
 
 # @@protoc_insertion_point(module_scope)

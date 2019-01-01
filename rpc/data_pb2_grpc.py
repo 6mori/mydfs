@@ -24,10 +24,10 @@ class FileSystemStub(object):
         request_serializer=data__pb2.Filename.SerializeToString,
         response_deserializer=data__pb2.Response.FromString,
         )
-    self.ListFiles = channel.unary_stream(
-        '/rpc.FileSystem/ListFiles',
-        request_serializer=data__pb2.Empty.SerializeToString,
-        response_deserializer=data__pb2.FileList.FromString,
+    self.GetFileInfo = channel.unary_unary(
+        '/rpc.FileSystem/GetFileInfo',
+        request_serializer=data__pb2.Filename.SerializeToString,
+        response_deserializer=data__pb2.FileInfo.FromString,
         )
     self.Upload = channel.stream_unary(
         '/rpc.FileSystem/Upload',
@@ -41,12 +41,12 @@ class FileSystemStub(object):
         )
     self.Lock = channel.unary_unary(
         '/rpc.FileSystem/Lock',
-        request_serializer=data__pb2.Filename.SerializeToString,
+        request_serializer=data__pb2.LockRequest.SerializeToString,
         response_deserializer=data__pb2.Response.FromString,
         )
     self.Unlock = channel.unary_unary(
         '/rpc.FileSystem/Unlock',
-        request_serializer=data__pb2.Filename.SerializeToString,
+        request_serializer=data__pb2.LockRequest.SerializeToString,
         response_deserializer=data__pb2.Response.FromString,
         )
 
@@ -69,9 +69,9 @@ class FileSystemServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def ListFiles(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
+  def GetFileInfo(self, request, context):
+    """rpc ListFiles(Empty) returns (stream FileList) {}
+    """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
@@ -117,10 +117,10 @@ def add_FileSystemServicer_to_server(servicer, server):
           request_deserializer=data__pb2.Filename.FromString,
           response_serializer=data__pb2.Response.SerializeToString,
       ),
-      'ListFiles': grpc.unary_stream_rpc_method_handler(
-          servicer.ListFiles,
-          request_deserializer=data__pb2.Empty.FromString,
-          response_serializer=data__pb2.FileList.SerializeToString,
+      'GetFileInfo': grpc.unary_unary_rpc_method_handler(
+          servicer.GetFileInfo,
+          request_deserializer=data__pb2.Filename.FromString,
+          response_serializer=data__pb2.FileInfo.SerializeToString,
       ),
       'Upload': grpc.stream_unary_rpc_method_handler(
           servicer.Upload,
@@ -134,15 +134,125 @@ def add_FileSystemServicer_to_server(servicer, server):
       ),
       'Lock': grpc.unary_unary_rpc_method_handler(
           servicer.Lock,
-          request_deserializer=data__pb2.Filename.FromString,
+          request_deserializer=data__pb2.LockRequest.FromString,
           response_serializer=data__pb2.Response.SerializeToString,
       ),
       'Unlock': grpc.unary_unary_rpc_method_handler(
           servicer.Unlock,
-          request_deserializer=data__pb2.Filename.FromString,
+          request_deserializer=data__pb2.LockRequest.FromString,
           response_serializer=data__pb2.Response.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
       'rpc.FileSystem', rpc_method_handlers)
+  server.add_generic_rpc_handlers((generic_handler,))
+
+
+class TrackerStub(object):
+  # missing associated documentation comment in .proto file
+  pass
+
+  def __init__(self, channel):
+    """Constructor.
+
+    Args:
+      channel: A grpc.Channel.
+    """
+    self.GetHost = channel.unary_unary(
+        '/rpc.Tracker/GetHost',
+        request_serializer=data__pb2.Filename.SerializeToString,
+        response_deserializer=data__pb2.HostAddress.FromString,
+        )
+    self.GetServers = channel.unary_stream(
+        '/rpc.Tracker/GetServers',
+        request_serializer=data__pb2.Filename.SerializeToString,
+        response_deserializer=data__pb2.Address.FromString,
+        )
+    self.HeartBeat = channel.unary_unary(
+        '/rpc.Tracker/HeartBeat',
+        request_serializer=data__pb2.Address.SerializeToString,
+        response_deserializer=data__pb2.Empty.FromString,
+        )
+    self.ListFiles = channel.unary_stream(
+        '/rpc.Tracker/ListFiles',
+        request_serializer=data__pb2.Empty.SerializeToString,
+        response_deserializer=data__pb2.FileInfo.FromString,
+        )
+    self.DeleteFile = channel.unary_unary(
+        '/rpc.Tracker/DeleteFile',
+        request_serializer=data__pb2.Filename.SerializeToString,
+        response_deserializer=data__pb2.Response.FromString,
+        )
+
+
+class TrackerServicer(object):
+  # missing associated documentation comment in .proto file
+  pass
+
+  def GetHost(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def GetServers(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def HeartBeat(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def ListFiles(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def DeleteFile(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+
+def add_TrackerServicer_to_server(servicer, server):
+  rpc_method_handlers = {
+      'GetHost': grpc.unary_unary_rpc_method_handler(
+          servicer.GetHost,
+          request_deserializer=data__pb2.Filename.FromString,
+          response_serializer=data__pb2.HostAddress.SerializeToString,
+      ),
+      'GetServers': grpc.unary_stream_rpc_method_handler(
+          servicer.GetServers,
+          request_deserializer=data__pb2.Filename.FromString,
+          response_serializer=data__pb2.Address.SerializeToString,
+      ),
+      'HeartBeat': grpc.unary_unary_rpc_method_handler(
+          servicer.HeartBeat,
+          request_deserializer=data__pb2.Address.FromString,
+          response_serializer=data__pb2.Empty.SerializeToString,
+      ),
+      'ListFiles': grpc.unary_stream_rpc_method_handler(
+          servicer.ListFiles,
+          request_deserializer=data__pb2.Empty.FromString,
+          response_serializer=data__pb2.FileInfo.SerializeToString,
+      ),
+      'DeleteFile': grpc.unary_unary_rpc_method_handler(
+          servicer.DeleteFile,
+          request_deserializer=data__pb2.Filename.FromString,
+          response_serializer=data__pb2.Response.SerializeToString,
+      ),
+  }
+  generic_handler = grpc.method_handlers_generic_handler(
+      'rpc.Tracker', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))

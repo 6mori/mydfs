@@ -5,14 +5,37 @@ package rpc;
 service FileSystem {
   rpc CreateFile(Filename) returns (Response) {}
   rpc DeleteFile(Filename) returns (Response) {}
-  rpc ListFiles(Empty) returns (stream FileList) {}
+  // rpc ListFiles(Empty) returns (stream FileList) {}
+  rpc GetFileInfo(Filename) returns (FileInfo) {}
   rpc Upload(stream UploadRequest) returns (Response) {}
   rpc Download(Filename) returns (stream Chunk) {}
-  rpc Lock(Filename) returns (Response) {}
-  rpc Unlock(Filename) returns (Response) {}
+  rpc Lock(LockRequest) returns (Response) {}
+  rpc Unlock(LockRequest) returns (Response) {}
+}
+
+service Tracker {
+  rpc GetHost(Filename) returns (HostAddress) {}
+  rpc GetServers(Filename) returns (stream Address) {}
+  rpc HeartBeat(Address) returns (Empty) {}
+  rpc ListFiles(Empty) returns (stream FileInfo) {}
+  rpc DeleteFile(Filename) returns (Response) {}
 }
 
 message Empty {}
+
+message LockRequest {
+  string filename = 1;
+  int32 userid = 2;
+}
+
+message Address {
+  string address = 1;
+}
+
+message HostAddress {
+  StatusCode code = 1;
+  string address = 2;
+}
 
 message Chunk {
   bytes buffer = 1;
@@ -39,7 +62,7 @@ message Filename {
   string filename = 1;
 }
 
-message FileList {
+message FileInfo {
   string filename = 1;
   float size = 2;
   float createdtime = 3;
