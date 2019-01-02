@@ -33,10 +33,10 @@ class FileSystemClient():
         server_address = self.GetHost(filename)
         channel = grpc.insecure_channel(server_address)
         self.server_stub = data_pb2_grpc.FileSystemStub(channel=channel)
-        while not self.LockFile(filename):
+        while not self.__LockFile(filename):
             time.sleep(2)
         response = self.server_stub.DeleteFile(data_pb2.Filename(filename=filename))
-        self.UnlockFile(filename)
+        self.__UnlockFile(filename)
         self.tracker_stub.DeleteFile(data_pb2.Filename(filename=filename))
         file_path = DIR + 'tmp_' + filename
         if Path(file_path).is_file():
@@ -68,21 +68,23 @@ class FileSystemClient():
         if self.__CheckCache(filename, file_path):
             print('Already in cache.')
         else:
-            time.sleep(5)
-            while not self.LockFile(filename):
+            time.sleep(2)
+            while not self.__LockFile(filename):
                 time.sleep(2)
+            if Path(file_path).is_file():
+                os.chmod(file_path, S_IWUSR|S_IREAD)
+                Path(file_path).unlink()
             result = self.__Download(filename, file_path)
-            self.UnlockFile(filename)
-        os.chmod(file_path, S_IREAD|S_IRGRP|S_IROTH)
+            self.__UnlockFile(filename)
+            os.chmod(file_path, S_IREAD|S_IRGRP|S_IROTH)
         os.system(file_path)
-        os.chmod(file_path, S_IWUSR|S_IREAD)
 
     def UpdateFile(self, filename):
         server_address = self.GetHost(filename)
         channel = grpc.insecure_channel(server_address)
         self.server_stub = data_pb2_grpc.FileSystemStub(channel=channel)
         file_path = DIR + 'tmp_' + filename
-        while not self.LockFile(filename):
+        while not self.__LockFile(filename):
             time.sleep(2)
         if self.__CheckCache(filename, file_path):
             print('Already in cache.')
@@ -92,17 +94,17 @@ class FileSystemClient():
         os.system(file_path)
         response = self.__Upload(filename, file_path)
         print(response.code, response.message)
-        self.UnlockFile(filename)
+        self.__UnlockFile(filename)
 
-    def LockFile(self, filename):
+    def __LockFile(self, filename):
         response = self.server_stub.Lock(data_pb2.LockRequest(filename=filename, userid=self.user_id))
-        # print(response.code, response.message)
+        print(response.code, response.message)
         if response.code == 0:
             return True
         else:
             return False
 
-    def UnlockFile(self, filename):
+    def __UnlockFile(self, filename):
         response = self.server_stub.Unlock(data_pb2.LockRequest(filename=filename, userid=self.user_id))
         print(response.code, response.message)
         if response.code == 0:
@@ -139,6 +141,17 @@ class FileSystemClient():
 if __name__ == '__main__':
     DIR = sys.argv[2]
     client = FileSystemClient(sys.argv[1])
-    client.UpdateFile('test.txt')
-    client.OpenFile('test.txt')
+    command = sys.argv[3]
+    if len(sys.argv) == 5:
+        filename = sys.argv[4]
+    if command == 'open':
+        client.OpenFile(filename)
+    elif command == 'update':
+        client.UpdateFile(filename)
+    elif command == 'delete':
+        client.DeleteFile(filename)
+    elif command == 'list':
+        client.ListFiles()
+    # client.UpdateFile('test.txt')
+    # client.OpenFile('test.txt')
     # client.DeleteFile('test.txt')

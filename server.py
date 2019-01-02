@@ -241,7 +241,7 @@ class FileServer(data_pb2_grpc.FileSystemServicer):
 
     def __UnlockFile(self, stub, filename):
         response = stub.Unlock(data_pb2.LockRequest(filename=filename, userid=0))
-        print(response.code, response.message)
+        # print(response.code, response.message)
         if response.code == 0:
             return True
         else:

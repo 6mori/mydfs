@@ -111,7 +111,7 @@ class Tracker(data_pb2_grpc.TrackerServicer):
         channel = grpc.insecure_channel(address)
         stub = data_pb2_grpc.FileSystemStub(channel=channel)
         response = stub.CreateFile(data_pb2.Filename(filename=filename))
-        print(response.code, response.message)
+        # print(response.code, response.message)
 
     def __ReadData(self):
         if not Path(_DIR + 'tracker.json').is_file():
@@ -135,7 +135,6 @@ def serve():
     try:
         while True:
             tracker.CheckServer()
-            print(tracker.running_server)
             time.sleep(_HEARTBEAT_SECONDS)
     except KeyboardInterrupt:
         grpcServer.stop(0)
