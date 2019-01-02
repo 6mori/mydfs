@@ -63,6 +63,21 @@ class Tracker(data_pb2_grpc.TrackerServicer):
             else:
                 return data_pb2.HostAddress(code=1, address=addresses[0])
     
+    def GetServer(self, request, context):
+        data = self.__ReadData()
+        filename = request.filename
+        if filename not in data:
+            servers = list(self.running_server)
+            random.shuffle(servers)
+            addresses = data[filename] = servers[:2]
+            self.__WriteData(data)
+            self.__CreateFile(filename, addresses[0])
+        servers = data[filename]
+        for i in range(1, len(servers)):
+            if servers[i] in self.running_server:
+                return data_pb2.HostAddress(code=0, address=servers[i])
+        return data_pb2.HostAddress(code=1, address=servers[0])
+    
     def GetServers(self, request, context):
         data = self.__ReadData()
         filename = request.filename

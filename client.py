@@ -39,8 +39,9 @@ class FileSystemClient():
         self.UnlockFile(filename)
         self.tracker_stub.DeleteFile(data_pb2.Filename(filename=filename))
         file_path = DIR + 'tmp_' + filename
-        os.chmod(file_path, S_IWUSR|S_IREAD)
-        Path(file_path).unlink()
+        if Path(file_path).is_file():
+            os.chmod(file_path, S_IWUSR|S_IREAD)
+            Path(file_path).unlink()
         print(response.code, response.message)
 
     def ListFiles(self):
@@ -58,19 +59,23 @@ class FileSystemClient():
         return response.address
 
     def OpenFile(self, filename):
-        server_address = self.GetHost(filename)
-        channel = grpc.insecure_channel(server_address)
+        response = self.tracker_stub.GetServer(data_pb2.Filename(filename=filename))
+        if response.code != 0:
+            response = self.tracker_stub.GetHost(data_pb2.Filename(filename=filename))
+        channel = grpc.insecure_channel(response.address)
         self.server_stub = data_pb2_grpc.FileSystemStub(channel=channel)
         file_path = DIR + 'tmp_' + filename
         if self.__CheckCache(filename, file_path):
             print('Already in cache.')
         else:
+            time.sleep(5)
             while not self.LockFile(filename):
                 time.sleep(2)
             result = self.__Download(filename, file_path)
             self.UnlockFile(filename)
         os.chmod(file_path, S_IREAD|S_IRGRP|S_IROTH)
         os.system(file_path)
+        os.chmod(file_path, S_IWUSR|S_IREAD)
 
     def UpdateFile(self, filename):
         server_address = self.GetHost(filename)
@@ -132,7 +137,8 @@ class FileSystemClient():
     
 
 if __name__ == '__main__':
+    DIR = sys.argv[2]
     client = FileSystemClient(sys.argv[1])
-    # client.OpenFile('d.txt')
-    client.UpdateFile('d.txt')
-    # client.DeleteFile('a.txt')
+    client.UpdateFile('test.txt')
+    client.OpenFile('test.txt')
+    # client.DeleteFile('test.txt')

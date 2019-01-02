@@ -163,6 +163,11 @@ class TrackerStub(object):
         request_serializer=data__pb2.Filename.SerializeToString,
         response_deserializer=data__pb2.HostAddress.FromString,
         )
+    self.GetServer = channel.unary_unary(
+        '/rpc.Tracker/GetServer',
+        request_serializer=data__pb2.Filename.SerializeToString,
+        response_deserializer=data__pb2.HostAddress.FromString,
+        )
     self.GetServers = channel.unary_stream(
         '/rpc.Tracker/GetServers',
         request_serializer=data__pb2.Filename.SerializeToString,
@@ -190,6 +195,13 @@ class TrackerServicer(object):
   pass
 
   def GetHost(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def GetServer(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -229,6 +241,11 @@ def add_TrackerServicer_to_server(servicer, server):
   rpc_method_handlers = {
       'GetHost': grpc.unary_unary_rpc_method_handler(
           servicer.GetHost,
+          request_deserializer=data__pb2.Filename.FromString,
+          response_serializer=data__pb2.HostAddress.SerializeToString,
+      ),
+      'GetServer': grpc.unary_unary_rpc_method_handler(
+          servicer.GetServer,
           request_deserializer=data__pb2.Filename.FromString,
           response_serializer=data__pb2.HostAddress.SerializeToString,
       ),

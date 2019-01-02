@@ -15,6 +15,7 @@ service FileSystem {
 
 service Tracker {
   rpc GetHost(Filename) returns (HostAddress) {}
+  rpc GetServer(Filename) returns (HostAddress) {}
   rpc GetServers(Filename) returns (stream Address) {}
   rpc HeartBeat(Address) returns (Empty) {}
   rpc ListFiles(Empty) returns (stream FileInfo) {}

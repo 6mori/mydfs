@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='rpc',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\ndata.proto\x12\x03rpc\"\x07\n\x05\x45mpty\"/\n\x0bLockRequest\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0e\n\x06userid\x18\x02 \x01(\x05\"\x1a\n\x07\x41\x64\x64ress\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"=\n\x0bHostAddress\x12\x1d\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x0f.rpc.StatusCode\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"\x17\n\x05\x43hunk\x12\x0e\n\x06\x62uffer\x18\x01 \x01(\x0c\"C\n\rUploadRequest\x12\x12\n\x08\x66ilename\x18\x01 \x01(\tH\x00\x12\x10\n\x06\x62uffer\x18\x02 \x01(\x0cH\x00\x42\x0c\n\ntest_oneof\":\n\x08Response\x12\x1d\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x0f.rpc.StatusCode\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1c\n\x08\x46ilename\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\"U\n\x08\x46ileInfo\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0c\n\x04size\x18\x02 \x01(\x02\x12\x13\n\x0b\x63reatedtime\x18\x03 \x01(\x02\x12\x14\n\x0cmodifiedtime\x18\x04 \x01(\x02* \n\nStatusCode\x12\x06\n\x02OK\x10\x00\x12\n\n\x06\x46\x61iled\x10\x01\x32\xcb\x02\n\nFileSystem\x12,\n\nCreateFile\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x12,\n\nDeleteFile\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x12-\n\x0bGetFileInfo\x12\r.rpc.Filename\x1a\r.rpc.FileInfo\"\x00\x12/\n\x06Upload\x12\x12.rpc.UploadRequest\x1a\r.rpc.Response\"\x00(\x01\x12)\n\x08\x44ownload\x12\r.rpc.Filename\x1a\n.rpc.Chunk\"\x00\x30\x01\x12)\n\x04Lock\x12\x10.rpc.LockRequest\x1a\r.rpc.Response\"\x00\x12+\n\x06Unlock\x12\x10.rpc.LockRequest\x1a\r.rpc.Response\"\x00\x32\xe9\x01\n\x07Tracker\x12,\n\x07GetHost\x12\r.rpc.Filename\x1a\x10.rpc.HostAddress\"\x00\x12-\n\nGetServers\x12\r.rpc.Filename\x1a\x0c.rpc.Address\"\x00\x30\x01\x12\'\n\tHeartBeat\x12\x0c.rpc.Address\x1a\n.rpc.Empty\"\x00\x12*\n\tListFiles\x12\n.rpc.Empty\x1a\r.rpc.FileInfo\"\x00\x30\x01\x12,\n\nDeleteFile\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\ndata.proto\x12\x03rpc\"\x07\n\x05\x45mpty\"/\n\x0bLockRequest\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0e\n\x06userid\x18\x02 \x01(\x05\"\x1a\n\x07\x41\x64\x64ress\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"=\n\x0bHostAddress\x12\x1d\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x0f.rpc.StatusCode\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"\x17\n\x05\x43hunk\x12\x0e\n\x06\x62uffer\x18\x01 \x01(\x0c\"C\n\rUploadRequest\x12\x12\n\x08\x66ilename\x18\x01 \x01(\tH\x00\x12\x10\n\x06\x62uffer\x18\x02 \x01(\x0cH\x00\x42\x0c\n\ntest_oneof\":\n\x08Response\x12\x1d\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x0f.rpc.StatusCode\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1c\n\x08\x46ilename\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\"U\n\x08\x46ileInfo\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0c\n\x04size\x18\x02 \x01(\x02\x12\x13\n\x0b\x63reatedtime\x18\x03 \x01(\x02\x12\x14\n\x0cmodifiedtime\x18\x04 \x01(\x02* \n\nStatusCode\x12\x06\n\x02OK\x10\x00\x12\n\n\x06\x46\x61iled\x10\x01\x32\xcb\x02\n\nFileSystem\x12,\n\nCreateFile\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x12,\n\nDeleteFile\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x12-\n\x0bGetFileInfo\x12\r.rpc.Filename\x1a\r.rpc.FileInfo\"\x00\x12/\n\x06Upload\x12\x12.rpc.UploadRequest\x1a\r.rpc.Response\"\x00(\x01\x12)\n\x08\x44ownload\x12\r.rpc.Filename\x1a\n.rpc.Chunk\"\x00\x30\x01\x12)\n\x04Lock\x12\x10.rpc.LockRequest\x1a\r.rpc.Response\"\x00\x12+\n\x06Unlock\x12\x10.rpc.LockRequest\x1a\r.rpc.Response\"\x00\x32\x99\x02\n\x07Tracker\x12,\n\x07GetHost\x12\r.rpc.Filename\x1a\x10.rpc.HostAddress\"\x00\x12.\n\tGetServer\x12\r.rpc.Filename\x1a\x10.rpc.HostAddress\"\x00\x12-\n\nGetServers\x12\r.rpc.Filename\x1a\x0c.rpc.Address\"\x00\x30\x01\x12\'\n\tHeartBeat\x12\x0c.rpc.Address\x1a\n.rpc.Empty\"\x00\x12*\n\tListFiles\x12\n.rpc.Empty\x1a\r.rpc.FileInfo\"\x00\x30\x01\x12,\n\nDeleteFile\x12\r.rpc.Filename\x1a\r.rpc.Response\"\x00\x62\x06proto3')
 )
 
 _STATUSCODE = _descriptor.EnumDescriptor(
@@ -544,7 +544,7 @@ _TRACKER = _descriptor.ServiceDescriptor(
   index=1,
   serialized_options=None,
   serialized_start=808,
-  serialized_end=1041,
+  serialized_end=1089,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetHost',
@@ -556,9 +556,18 @@ _TRACKER = _descriptor.ServiceDescriptor(
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
+    name='GetServer',
+    full_name='rpc.Tracker.GetServer',
+    index=1,
+    containing_service=None,
+    input_type=_FILENAME,
+    output_type=_HOSTADDRESS,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
     name='GetServers',
     full_name='rpc.Tracker.GetServers',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_FILENAME,
     output_type=_ADDRESS,
@@ -567,7 +576,7 @@ _TRACKER = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='HeartBeat',
     full_name='rpc.Tracker.HeartBeat',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_ADDRESS,
     output_type=_EMPTY,
@@ -576,7 +585,7 @@ _TRACKER = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ListFiles',
     full_name='rpc.Tracker.ListFiles',
-    index=3,
+    index=4,
     containing_service=None,
     input_type=_EMPTY,
     output_type=_FILEINFO,
@@ -585,7 +594,7 @@ _TRACKER = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='DeleteFile',
     full_name='rpc.Tracker.DeleteFile',
-    index=4,
+    index=5,
     containing_service=None,
     input_type=_FILENAME,
     output_type=_RESPONSE,

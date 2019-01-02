@@ -12,7 +12,7 @@ from rpc import data_pb2, data_pb2_grpc
 # from portalocker.portalocker import lock, unlock
 # from portalocker.constants import LOCK_SH, LOCK_EX, LOCK_NB, LOCK_UN
 
-_HEARTBEAT_SECONDS = 2
+_HEARTBEAT_SECONDS = 1
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 _HOST = 'localhost'
 _PORT = ''
@@ -63,6 +63,7 @@ class FileServer(data_pb2_grpc.FileSystemServicer):
         return data_pb2.Response(code=1, message='Permission denied.')
 
     def CreateFile(self, request, context):
+        self.TryComplete()
         filename = request.filename
         file_path = _DIR + filename
         # file = Path(file_path)
@@ -74,10 +75,8 @@ class FileServer(data_pb2_grpc.FileSystemServicer):
                 break
             if no == 0 and address == self.address:
                 continue
-            try:
-                self.CreateSlave(filename, address)
-            except:
-                self.AddUncomplete('create', filename, address)
+            self.AddUncomplete('create', filename, address)
+            self.TryComplete()
         return data_pb2.Response(code=0, message='Success.')
 
     def DeleteFile(self, request, context):
@@ -94,10 +93,8 @@ class FileServer(data_pb2_grpc.FileSystemServicer):
                     break
                 if no == 0 and address == self.address:
                     continue
-                try:
-                    self.DeleteSlave(filename, address)
-                except:
-                    self.AddUncomplete('delete', filename, address)
+                self.AddUncomplete('delete', filename, address)
+                self.TryComplete()
             return data_pb2.Response(code=0, message='Success.')
 
     # def ListFiles(self, requset, context):
@@ -127,6 +124,7 @@ class FileServer(data_pb2_grpc.FileSystemServicer):
                 yield data_pb2.Chunk(buffer=chunk)
 
     def Upload(self, request_iterator, context):
+        self.TryComplete()
         for no, request in enumerate(request_iterator):
             if no == 0:
                 filename = request.filename
@@ -141,27 +139,34 @@ class FileServer(data_pb2_grpc.FileSystemServicer):
                 break
             if no == 0 and address == self.address:
                 continue
-            try:
-                self.UpdateSlave(filename, address)
-            except:
-                self.AddUncomplete('update', filename, address)
+            self.AddUncomplete('update', filename, address)
+            self.TryComplete()
         return data_pb2.Response(code=0, message='ok')
 
     def CreateSlave(self, filename, address):
         channel = grpc.insecure_channel(address)
         stub = data_pb2_grpc.FileSystemStub(channel=channel)
+        if not self.__LockFile(stub, filename):
+            raise Exception
         stub.CreateFile(data_pb2.Filename(filename=filename))
+        self.__UnlockFile(stub, filename)
     
     def DeleteSlave(self, filename, address):
         channel = grpc.insecure_channel(address)
         stub = data_pb2_grpc.FileSystemStub(channel=channel)
+        if not self.__LockFile(stub, filename):
+            raise Exception
         stub.DeleteFile(data_pb2.Filename(filename=filename))
+        self.__UnlockFile(stub, filename)
     
     def UpdateSlave(self, filename, address):
         file_path = _DIR + filename
         channel = grpc.insecure_channel(address)
         stub = data_pb2_grpc.FileSystemStub(channel=channel)
+        if not self.__LockFile(stub, filename):
+            raise Exception
         stub.Upload(self.__ReadFile(filename, file_path))
+        self.__UnlockFile(stub, filename)
 
     def AddUncomplete(self, job, filename, address):
         self.uncomplete = self.__ReadData('uncomplete.json')
@@ -171,12 +176,14 @@ class FileServer(data_pb2_grpc.FileSystemServicer):
     
     def DelUncomplete(self, job, filename, address):
         self.uncomplete = self.__ReadData('uncomplete.json')
-        self.uncomplete.remove([job, filename, address])
+        if [job, filename, address] in self.uncomplete:
+            self.uncomplete.remove([job, filename, address])
         self.__WriteData('uncomplete.json', self.uncomplete)
     
     def TryComplete(self):
         self.uncomplete = self.__ReadData('uncomplete.json')
-        for job, filename, address in self.uncomplete[:]:
+        if self.uncomplete:
+            job, filename, address = self.uncomplete[0]
             if job == 'create':
                 try:
                     self.CreateSlave(filename, address)
@@ -224,6 +231,21 @@ class FileServer(data_pb2_grpc.FileSystemServicer):
         with open(_DIR + datafile, 'w') as file:
             json.dump(data, file)
 
+    def __LockFile(self, stub, filename):
+        response = stub.Lock(data_pb2.LockRequest(filename=filename, userid=0))
+        # print(response.code, response.message)
+        if response.code == 0:
+            return True
+        else:
+            return False
+
+    def __UnlockFile(self, stub, filename):
+        response = stub.Unlock(data_pb2.LockRequest(filename=filename, userid=0))
+        print(response.code, response.message)
+        if response.code == 0:
+            return True
+        else:
+            return False
 
 
 def serve():
